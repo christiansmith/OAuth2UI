@@ -12,7 +12,8 @@ files = [
   'app/scripts/*.js',
   'app/scripts/**/*.js',
   'test/mock/**/*.js',
-  'test/spec/**/*.js'
+  'test/spec/**/*.js',
+  'test/spec/**/*.coffee'
 ];
 
 // list of files to exclude
@@ -36,7 +37,7 @@ colors = true;
 logLevel = LOG_INFO;
 
 // enable / disable watching file and executing tests whenever any file changes
-autoWatch = false;
+autoWatch = true;
 
 // Start these browsers, currently available:
 // - Chrome
@@ -50,6 +51,12 @@ browsers = ['Chrome'];
 
 // If browser does not capture in given timeout [ms], kill it
 captureTimeout = 5000;
+
+// compile CoffeeScript
+preprocessors = {
+  '**/*.coffee': 'coffee'
+};
+
 
 // Continuous Integration mode
 // if true, it capture browsers, run tests and exit

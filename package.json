@@ -1,5 +1,11 @@
 {
   "name": "oauth2ui",
+  "author": {
+    "name": "Christian Smith",
+    "email": "smith@anvil.io",
+    "url": "http://anvil.io"
+  },  
+  "description": "OAuth2Server User Interface",  
   "version": "0.0.0",
   "dependencies": {},
   "devDependencies": {
@@ -29,18 +35,9 @@
     "time-grunt": "~0.1.0",
     "send": "~0.1.4"
   },
-  "engines": {
-    "node": ">=0.8.0"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/christiansmith/OAuth2UI.git"
   },
-  "description": "ERROR: No README.md file found!",
-  "main": "Gruntfile.js",
-  "directories": {
-    "test": "test"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": "",
-  "author": "Christian Smith",
   "license": "MIT"
 }
