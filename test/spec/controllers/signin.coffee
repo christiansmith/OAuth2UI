@@ -17,5 +17,10 @@ describe 'SigninCtrl', ->
     SigninCtrl = $controller 'SigninCtrl', $scope: scope
 
 
-  it 'should have scope', ->
-    expect(scope.email).toBe undefined
+  describe 'initial state', ->
+
+    it 'should have a blank credentials', ->
+      expect(scope.credentials).toEqual {}
+
+    it 'should have an empty message', ->
+      expect(scope.message).toBe ''

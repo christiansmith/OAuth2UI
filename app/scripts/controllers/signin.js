@@ -1,6 +1,23 @@
 'use strict';
 
 angular.module('OAuth2UI')
-  .controller('SigninCtrl', function ($scope) {
+  .controller('SigninCtrl', function ($scope, $location, User) {
+
+    $scope.credentials = {};
+    $scope.message = '';
+
+    $scope.login = function () {
+      function success (response) {
+        console.log('SUCCESS', User);
+        $location.path('/authorize')
+      }
+      
+      function failure (fault) {
+        console.log('FAILURE', fault.data);
+        $scope.message = fault.data.error;
+      }
+
+      User.login($scope.credentials).then(success, failure);
+    }
 
   });

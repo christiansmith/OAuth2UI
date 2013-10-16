@@ -1,18 +1,19 @@
-<form class="form-signin">
-  <h2 class="form-signin-heading">Authorize</h2>
+<form class="form-signin clearfix">
+  <h3 class="form-signin-heading">Authorize</h3>
 
-  <p>APPLICATION X wants to</p>
+  <p><strong><em>Some Application</em> wants to ...</strong></p>
+
   <table class="table table-condensed table-hover">
-    <tr>
-      <td>access your profile</td>
-      <td><i class="icon-check"></i></td>
-    </tr>
-    <tr>
-      <td>eat your tweets</td>
-      <td><i class="icon-check"></i></td>
+    <tr ng-repeat="description in scope">
+      <td>{{description}}</td>
+      <td><i class="icon-check"></i></td>      
     </tr>
   </table>
 
-  <button class="btn btn-medium btn-primary" type="submit">Allow</button>
-  <button class="btn btn-medium btn-primary" type="submit">Deny</button>
+  <p class="text-center"><strong>Are you cool with that?</strong></p>
+
+  <div class="text-center">
+    <button class="btn btn-medium btn-primary" type="submit">Allow</button>
+    <button class="btn btn-medium btn-primary" type="submit">Deny</button>
+  </div>
 </form>
