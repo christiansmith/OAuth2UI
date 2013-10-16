@@ -4,9 +4,9 @@
     "name": "Christian Smith",
     "email": "smith@anvil.io",
     "url": "http://anvil.io"
-  },  
-  "description": "OAuth2Server User Interface",  
-  "version": "0.0.0",
+  },
+  "description": "OAuth2Server Default User Interface",
+  "version": "0.0.1",
   "dependencies": {},
   "devDependencies": {
     "grunt": "~0.4.1",
@@ -33,7 +33,8 @@
     "grunt-google-cdn": "~0.2.0",
     "grunt-ngmin": "~0.0.2",
     "time-grunt": "~0.1.0",
-    "send": "~0.1.4"
+    "send": "~0.1.4",
+    "grunt-release": "~0.5.1"
   },
   "repository": {
     "type": "git",
