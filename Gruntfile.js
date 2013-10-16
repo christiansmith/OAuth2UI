@@ -256,7 +256,6 @@ module.exports = function (grunt) {
           dest: '<%= yeoman.dist %>',
           src: [
             '*.{ico,png,txt}',
-            '.htaccess',
             'bower_components/bootstrap/docs/assets/css/bootstrap.css',
             'bower_components/bootstrap/docs/assets/css/bootstrap-responsive.css',
             'bower_components/bootstrap/docs/assets/js/html5shiv.js',
