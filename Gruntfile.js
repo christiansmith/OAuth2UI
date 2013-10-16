@@ -9,8 +9,6 @@ var mountFolder = function (connect, dir) {
     ;
 };
 
-
-
 // # Globbing
 // for performance reasons we're only matching one level down:
 // 'test/spec/{,*/}*.js'
@@ -20,6 +18,8 @@ var mountFolder = function (connect, dir) {
 module.exports = function (grunt) {
   require('load-grunt-tasks')(grunt);
   require('time-grunt')(grunt);
+
+  grunt.loadNpmTasks('grunt-release');
 
   // configurable paths
   var yeomanConfig = {
@@ -137,15 +137,6 @@ module.exports = function (grunt) {
         }]
       },
       server: '.tmp'
-    },
-    jshint: {
-      options: {
-        jshintrc: '.jshintrc'
-      },
-      all: [
-        'Gruntfile.js',
-        '<%= yeoman.app %>/scripts/{,*/}*.js'
-      ]
     },
     coffee: {
       options: {
@@ -266,7 +257,13 @@ module.exports = function (grunt) {
           src: [
             '*.{ico,png,txt}',
             '.htaccess',
-            'bower_components/**/*',
+            'bower_components/bootstrap/docs/assets/css/bootstrap.css',
+            'bower_components/bootstrap/docs/assets/css/bootstrap-responsive.css',
+            'bower_components/bootstrap/docs/assets/js/html5shiv.js',
+            'bower_components/bootstrap/docs/assets/ico/**/*',
+            'bower_components/font-awesome/css/*',
+            'bower_components/font-awesome/font/*',
+            'bower_components/angular-unstable/angular.js',
             'images/{,*/}*.{gif,webp}',
             'styles/fonts/*'
           ]
@@ -367,14 +364,13 @@ module.exports = function (grunt) {
     'copy:dist',
     'cdnify',
     'ngmin',
-    'cssmin',
+    //'cssmin',
     'uglify',
     'rev',
     'usemin'
   ]);
 
   grunt.registerTask('default', [
-    'jshint',
     'test',
     'build'
   ]);

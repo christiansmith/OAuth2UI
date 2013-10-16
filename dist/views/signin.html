@@ -1,0 +1,58 @@
+<form class="form-signin" name="signin">
+
+  <h3 class="form-signin-heading">Sign in</h3>
+
+  <div class="alert alert-error" ng-show="message">{{message}}</div>
+
+  <div class="control-group" ng-class="signin.email | controlError">
+    <div class="controls">
+      <div class="input-prepend input-append input-block-level">
+        <span class="add-on signup-label"><i class="icon-envelope"></i></span>
+
+        <input type="email" name="email" ng-model="credentials.email" class="input-block-level input" placeholder="Email" required="">
+
+        <span class="add-on signup-ok" ng-show="signin.email | isComplete">
+          <i class="icon-ok"></i>
+        </span>
+
+        <span id="emailError" class="help-inline pull-right" ng-show="signin.email.$error.email">
+          Must be a valid email!
+        </span>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="control-group" ng-class="signin.password | controlError">
+    <div class="controls">
+      <div class="input-prepend input-append input-block-level">
+        <span class="add-on signup-label"><i class="icon-lock"></i></span>
+
+        <input type="password" name="password" ng-model="credentials.password" class="input-block-level input" placeholder="Password" required="" ng-minlength="6">
+
+        <span class="add-on signup-ok" ng-show="signin.password | isComplete">
+          <i class="icon-ok"></i>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <div class="controls">
+      <label class="checkbox">
+        <input type="checkbox" value="remember-me"> Remember me
+      </label>      
+    </div>
+  </div>
+
+  
+
+  <br>
+  <div class="text-center">
+    <button ng-click="login()" ng-disabled="signin.$invalid" class="btn btn-medium btn-primary">Sign in</button> 
+    <br><br>
+    <p><small>New here? <a href="/signup">Create an account.</a></small></p>
+        
+  </div>
+  
+</form>

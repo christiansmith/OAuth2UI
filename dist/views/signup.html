@@ -1,0 +1,101 @@
+<form id="#signup" class="form-signin clearfix" name="myForm">
+
+  <h3 class="form-signin-heading">Sign up</h3>
+
+  <div class="alert alert-error" ng-show="message">{{message}}</div>
+
+  <div class="control-group" ng-class="myForm.first | controlError">
+    <div class="controls">
+      <div class="input-prepend input-append input-block-level">
+        <span class="add-on signup-label"><i class="icon-chevron-right"></i></span>
+
+        <input type="text" name="first" ng-model="registration.first" class="input-block-level input" placeholder="First name">
+
+        <span class="add-on signup-ok" ng-show="myForm.first | isComplete">
+          <i class="icon-ok"></i>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="control-group" ng-class="myForm.last | controlError">
+    <div class="controls">
+      <div class="input-prepend input-append input-block-level">
+        <span class="add-on signup-label"><i class="icon-chevron-right"></i></span>
+
+        <input type="text" name="last" ng-model="registration.last" class="input-block-level input" placeholder="Last name">
+
+        <span class="add-on signup-ok" ng-show="myForm.last | isComplete">
+          <i class="icon-ok"></i>
+        </span>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="control-group" ng-class="myForm.username | controlError">
+    <div class="controls">
+      <div class="input-prepend input-append input-block-level">
+        <span class="add-on signup-label"><i class="icon-user"></i></span>
+
+        <input type="text" name="username" ng-model="registration.username" class="input-block-level input" placeholder="User name">
+
+        <span class="add-on signup-ok" ng-show="myForm.username | isComplete">
+          <i class="icon-ok"></i>
+        </span>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="control-group" ng-class="myForm.email | controlError">
+    <div class="controls">
+      <div class="input-prepend input-append input-block-level">
+        <span class="add-on signup-label"><i class="icon-envelope"></i></span>
+
+        <input type="email" name="email" ng-model="registration.email" class="input-block-level input" placeholder="Email" required="">
+
+        <span class="add-on signup-ok" ng-show="myForm.email | isComplete">
+          <i class="icon-ok"></i>
+        </span>
+
+        <span id="emailError" class="help-inline pull-right" ng-show="myForm.email.$error.email">
+          Must be a valid email!
+        </span>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="control-group" ng-class="myForm.password | controlError">
+    <div class="controls">
+      <div class="input-prepend input-append input-block-level">
+        <span class="add-on signup-label"><i class="icon-lock"></i></span>
+
+        <input type="password" name="password" ng-model="registration.password" class="input-block-level input" placeholder="Password" required="" ng-minlength="6">
+
+        <span class="add-on signup-ok" ng-show="myForm.password | isComplete">
+          <i class="icon-ok"></i>
+        </span>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="text-right">
+    <button ng-click="signup()" ng-disabled="myForm.$invalid" class="btn btn-medium btn-primary">Sign up</button>
+      
+    <button ng-click="reset()" class="btn btn-medium">Reset</button>  
+
+    <br><br>
+    <p><small>Have an account? <a href="/signin">Sign in</a></small></p>      
+  </div>
+
+  
+    
+  
+  
+
+   
+
+</form>
