@@ -1,6 +1,8 @@
 <form class="form-signin clearfix">
   <h3 class="form-signin-heading">Authorize</h3>
 
+  <p><small><a href="#">{{user.email}}</a></small></p>
+
   <p><strong><em>Some Application</em> wants to ...</strong></p>
 
   <table class="table table-condensed table-hover">
@@ -15,5 +17,9 @@
   <div class="text-center">
     <button class="btn btn-medium btn-primary" type="submit">Allow</button>
     <button class="btn btn-medium btn-primary" type="submit">Deny</button>
+    <br><br>
+    <p><small>Not {{user.email}}? <a ng-click="logout()">Logout</a></small></p>
   </div>
+
+
 </form>

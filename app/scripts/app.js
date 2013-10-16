@@ -1,10 +1,11 @@
 'use strict';
 
 angular.module('OAuth2UI', [])
-  .config(function ($routeProvider, $locationProvider) {
+  .config(function ($routeProvider, $locationProvider, $httpProvider) {
 
     $locationProvider.html5Mode(true);
     $locationProvider.hashPrefix = '!';
+    $httpProvider.interceptors.push('AuthenticationInterceptor');
 
     $routeProvider
       .when('/authorize', {
@@ -22,4 +23,8 @@ angular.module('OAuth2UI', [])
       .otherwise({
         redirectTo: '/signin'
       });
-  });
+  })
+
+  .run(function (User) {
+    User.session()
+  })
