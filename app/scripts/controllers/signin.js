@@ -2,7 +2,6 @@
 
 angular.module('OAuth2UI')
   .controller('SigninCtrl', function ($scope, $location, User) {
-
     $scope.credentials = {};
     $scope.message = '';
 
@@ -20,4 +19,5 @@ angular.module('OAuth2UI')
       User.login($scope.credentials).then(success, failure);
     }
 
-  });
+  })
+

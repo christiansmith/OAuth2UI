@@ -3,11 +3,11 @@
 
   <p><small><a href="#">{{user.email}}</a></small></p>
 
-  <p><strong><em>Some Application</em> wants to ...</strong></p>
+  <p><strong><em>{{client.name}}</em> wants to ...</strong></p>
 
   <table class="table table-condensed table-hover">
-    <tr ng-repeat="description in scope">
-      <td>{{description}}</td>
+    <tr ng-repeat="item in scope">
+      <td>{{item.description}}</td>
       <td><i class="icon-check"></i></td>      
     </tr>
   </table>
@@ -20,6 +20,4 @@
     <br><br>
     <p><small>Not {{user.email}}? <a ng-click="logout()">Logout</a></small></p>
   </div>
-
-
 </form>
