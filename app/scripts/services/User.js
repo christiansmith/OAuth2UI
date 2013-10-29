@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('OAuth2UI')
+angular.module('OAuth2UI.services')
   .factory('User', function ($http, $location) {
 
     /**

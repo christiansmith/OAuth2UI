@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('OAuth2UI')
+angular.module('OAuth2UI.controllers')
   .controller('SignupCtrl', function ($scope, $location, User) {
     
 

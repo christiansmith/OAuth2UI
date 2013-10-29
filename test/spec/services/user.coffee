@@ -6,7 +6,7 @@ describe 'User', ->
   {User,$httpBackend,$location} = {}
 
 
-  beforeEach module 'OAuth2UI'
+  beforeEach module 'OAuth2UI.services'
 
 
   beforeEach inject ($injector) ->

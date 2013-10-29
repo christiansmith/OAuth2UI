@@ -6,7 +6,8 @@ describe 'SigninCtrl', ->
   {SigninCtrl,scope} = {}
 
 
-  beforeEach module 'OAuth2UI'
+  beforeEach module 'OAuth2UI.controllers'
+  beforeEach module 'OAuth2UI.services'
 
 
   beforeEach inject ($injector) ->
