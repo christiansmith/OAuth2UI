@@ -67,7 +67,7 @@ angular.module('OAuth2UI.services')
       var user = this;
 
       function success (response) {
-        user.isAuthenticated(response.data.user);
+        user.isAuthenticated(response.data.account);
       }
 
       return $http.post('/signup', registration).then(success);
@@ -82,7 +82,7 @@ angular.module('OAuth2UI.services')
       var user = this;
 
       function success (response) {
-        user.isAuthenticated(response.data.user);
+        user.isAuthenticated(response.data.account);
       }
 
       return $http.post('/login', credentials).then(success);

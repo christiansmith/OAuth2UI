@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('OAuth2UI', [])
+angular.module('OAuth2UI', ['OAuth2UI.controllers', 'OAuth2UI.services'])
   .config(function ($routeProvider, $locationProvider, $httpProvider) {
 
     $locationProvider.html5Mode(true);

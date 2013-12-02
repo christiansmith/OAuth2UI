@@ -4,55 +4,18 @@
 
   <div class="alert alert-error" ng-show="message">{{message}}</div>
 
-  <div class="control-group" ng-class="myForm.first | controlError">
+  <div class="control-group" ng-class="myForm.name | controlError">
     <div class="controls">
       <div class="input-prepend input-append input-block-level">
         <span class="add-on signup-label"><i class="icon-chevron-right"></i></span>
 
         <input type="text" 
-               name="first"
-               ng-model="registration.first" 
+               name="name"
+               ng-model="registration.name" 
                class="input-block-level input" 
-               placeholder="First name">
+               placeholder="Full name">
 
-        <span class="add-on signup-ok" ng-show="myForm.first | isComplete">
-          <i class="icon-ok"></i>
-        </span>
-      </div>
-    </div>
-  </div>
-
-  <div class="control-group" ng-class="myForm.last | controlError">
-    <div class="controls">
-      <div class="input-prepend input-append input-block-level">
-        <span class="add-on signup-label"><i class="icon-chevron-right"></i></span>
-
-        <input type="text" 
-               name="last"
-               ng-model="registration.last" 
-               class="input-block-level input" 
-               placeholder="Last name">
-
-        <span class="add-on signup-ok" ng-show="myForm.last | isComplete">
-          <i class="icon-ok"></i>
-        </span>
-      </div>
-    </div>
-  </div>
-
-
-  <div class="control-group" ng-class="myForm.username | controlError">
-    <div class="controls">
-      <div class="input-prepend input-append input-block-level">
-        <span class="add-on signup-label"><i class="icon-user"></i></span>
-
-        <input type="text" 
-               name="username"
-               ng-model="registration.username" 
-               class="input-block-level input" 
-               placeholder="User name">
-
-        <span class="add-on signup-ok" ng-show="myForm.username | isComplete">
+        <span class="add-on signup-ok" ng-show="myForm.name | isComplete">
           <i class="icon-ok"></i>
         </span>
       </div>

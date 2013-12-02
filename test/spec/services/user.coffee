@@ -88,7 +88,7 @@ describe 'User', ->
 
       $httpBackend.expectPOST('/login', form).respond({
         authenticated: true,
-        user: {name:'John Smith'}
+        account: {name:'John Smith'}
       })
       
       promise = User.login(form)
