@@ -1,4 +1,4 @@
-<form class="form-signin clearfix">
+<div class="form-signin clearfix">
   <h3 class="form-signin-heading">Authorize</h3>
 
   <p><small><a href="#">{{user.email}}</a></small></p>
@@ -15,9 +15,28 @@
   <p class="text-center"><strong>Are you cool with that?</strong></p>
 
   <div class="text-center">
-    <button class="btn btn-medium btn-primary" type="submit">Allow</button>
-    <button class="btn btn-medium btn-primary" type="submit">Deny</button>
+
+    <form action="/authorize" method="POST" accept-charset="utf-8">
+      <input type="hidden" name="authorized" value="true">
+      <input type="hidden" name="client_id" value="{{authorization.client_id}}">
+      <input type="hidden" name="response_type" value="{{authorization.response_type}}">
+      <input type="hidden" name="redirect_uri" value="{{authorization.redirect_uri}}">
+      <input type="hidden" name="scope" value="{{authorization.scope}}">
+      <input type="submit" class="btn btn-medium btn-primary" value="Allow">
+    </form>
+
+
+    <form action="/authorize" method="POST" accept-charset="utf-8">
+      <input type="hidden" name="client_id" value="{{authorization.client_id}}">
+      <input type="hidden" name="response_type" value="{{authorization.response_type}}">
+      <input type="hidden" name="redirect_uri" value="{{authorization.redirect_uri}}">
+      <input type="hidden" name="scope" value="{{authorization.scope}}">
+      <input type="submit" class="btn btn-medium btn-primary" value="Deny">
+    </form>
+
     <br><br>
     <p><small>Not {{user.email}}? <a ng-click="logout()">Logout</a></small></p>
   </div>
-</form>
+</div>
+
+

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('OAuth2UI.controllers', [])
-  .controller('AuthorizeCtrl', function ($scope, $window, $routeParams, $location, Authorization, User) {
+  .controller('AuthorizeCtrl', function ($scope, $routeParams, $location, Authorization, User) {
 
     Authorization.setParams($routeParams);
 
@@ -9,9 +9,11 @@ angular.module('OAuth2UI.controllers', [])
       $location.path('/signin')
     }
 
+    $scope.authorization = Authorization.getParams();
+
     function authDetailsSuccess (response) {
       console.log('RESPONSE', response)
-      $scope.client = response.data.client;
+      $scope.client = response.data.app;
       $scope.scope = response.data.scope;      
     }
 
@@ -25,7 +27,7 @@ angular.module('OAuth2UI.controllers', [])
 
     $scope.logout = function () { 
       User.logout().then(function () { 
-        $location.path('/signin') 
-      }) 
-    }
+        $location.path('/signin');
+      }); 
+    };
   })

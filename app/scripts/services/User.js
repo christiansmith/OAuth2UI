@@ -129,7 +129,7 @@ angular.module('OAuth2UI.services')
 
       function success (response) {
         if (response.data.authenticated) {
-          user.isAuthenticated(response.data.user);
+          user.isAuthenticated(response.data.account);
         }
       }
 
