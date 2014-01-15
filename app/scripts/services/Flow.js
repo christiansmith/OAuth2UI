@@ -2,11 +2,15 @@
 
 angular.module('OAuth2UI.services', [])
 
-  .factory('Authorization', function ($location, $http) {
+  .factory('Flow', function ($location, $http) {
 
     var params = {};
 
     return {
+
+      destination: function () {
+        return (Object.keys(params).length > 0) ? '/authorize' : '/account';
+      },
 
       getDetails: function () {
         return $http({
@@ -17,10 +21,6 @@ angular.module('OAuth2UI.services', [])
             'Content-type': 'application/json'
           }
         });
-      },
-
-      hasParams: function () {
-        return Boolean(Object.keys(params).length)
       },
 
       setParams: function (p) {

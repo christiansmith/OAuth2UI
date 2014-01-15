@@ -1,33 +1,33 @@
 'use strict';
 
 angular.module('OAuth2UI.controllers', [])
-  .controller('AuthorizeCtrl', function ($scope, $routeParams, $location, Authorization, User) {
+  .controller('AuthorizeCtrl', function ($scope, $routeParams, $location, Flow, User) {
 
-    Authorization.setParams($routeParams);
+    Flow.setParams($routeParams);
 
     if (!User.isAuthenticated()) {
       $location.path('/signin')
     }
 
-    $scope.authorization = Authorization.getParams();
+    $scope.authorization = Flow.getParams();
 
     function authDetailsSuccess (response) {
       console.log('RESPONSE', response)
       $scope.client = response.data.app;
-      $scope.scope = response.data.scope;      
+      $scope.scope = response.data.scope;
     }
 
     function authDetailsFailure (fault) {
       console.log('FAULT', fault)
     }
-    
-    Authorization.getDetails().then(authDetailsSuccess, authDetailsFailure);
+
+    Flow.getDetails().then(authDetailsSuccess, authDetailsFailure);
 
     $scope.user = User;
 
-    $scope.logout = function () { 
-      User.logout().then(function () { 
+    $scope.logout = function () {
+      User.logout().then(function () {
         $location.path('/signin');
-      }); 
+      });
     };
   })
