@@ -9,10 +9,10 @@
       <div class="input-prepend input-append input-block-level">
         <span class="add-on signup-label"><i class="icon-chevron-right"></i></span>
 
-        <input type="text" 
+        <input type="text"
                name="name"
-               ng-model="registration.name" 
-               class="input-block-level input" 
+               ng-model="registration.name"
+               class="input-block-level input"
                placeholder="Full name">
 
         <span class="add-on signup-ok" ng-show="myForm.name | isComplete">
@@ -28,11 +28,11 @@
       <div class="input-prepend input-append input-block-level">
         <span class="add-on signup-label"><i class="icon-envelope"></i></span>
 
-        <input type="email" 
+        <input type="email"
                name="email"
-               ng-model="registration.email" 
-               class="input-block-level input" 
-               placeholder="Email" 
+               ng-model="registration.email"
+               class="input-block-level input"
+               placeholder="Email"
                required>
 
         <span class="add-on signup-ok" ng-show="myForm.email | isComplete">
@@ -46,17 +46,17 @@
     </div>
   </div>
 
-  
+
   <div class="control-group" ng-class="myForm.password | controlError">
     <div class="controls">
       <div class="input-prepend input-append input-block-level">
         <span class="add-on signup-label"><i class="icon-lock"></i></span>
 
-        <input type="password" 
+        <input type="password"
                name="password"
-               ng-model="registration.password" 
-               class="input-block-level input" 
-               placeholder="Password" 
+               ng-model="registration.password"
+               class="input-block-level input"
+               placeholder="Password"
                required
                ng-minlength="6">
 
@@ -69,22 +69,22 @@
 
 
   <div class="text-right">
-    <button ng-click="signup()" 
-            ng-disabled="myForm.$invalid" 
+    <button ng-click="signup()"
+            ng-disabled="myForm.$invalid"
             class="btn btn-medium btn-primary">Sign up</button>
-      
-    <button ng-click="reset()" 
-            class="btn btn-medium">Reset</button>  
+
+    <button ng-click="reset()"
+            class="btn btn-medium">Reset</button>
 
     <br><br>
-    <p><small>Have an account? <a href="/signin">Sign in</a></small></p>      
+    <p><small>Have an account? <a href="/signin">Sign in</a></small></p>
   </div>
 
-  
-    
-  
-  
 
-   
+
+
+
+
+
 
 </form>

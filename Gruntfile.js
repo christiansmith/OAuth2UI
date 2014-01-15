@@ -35,7 +35,7 @@ module.exports = function (grunt) {
     fs.readFile(path.join(yeomanConfig.app, 'index.html'), function (err, body) {
       res.statusCode = 200;
       res.setHeader('Content-Length', body.length);
-      res.end(body);                   
+      res.end(body);
     });
   }
 

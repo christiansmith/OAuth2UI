@@ -10,11 +10,11 @@
       <div class="input-prepend input-append input-block-level">
         <span class="add-on signup-label"><i class="icon-envelope"></i></span>
 
-        <input type="email" 
+        <input type="email"
                name="email"
-               ng-model="credentials.email" 
-               class="input-block-level input" 
-               placeholder="Email" 
+               ng-model="credentials.email"
+               class="input-block-level input"
+               placeholder="Email"
                required>
 
         <span class="add-on signup-ok" ng-show="signin.email | isComplete">
@@ -28,17 +28,17 @@
     </div>
   </div>
 
-  
+
   <div class="control-group" ng-class="signin.password | controlError">
     <div class="controls">
       <div class="input-prepend input-append input-block-level">
         <span class="add-on signup-label"><i class="icon-lock"></i></span>
 
-        <input type="password" 
+        <input type="password"
                name="password"
-               ng-model="credentials.password" 
-               class="input-block-level input" 
-               placeholder="Password" 
+               ng-model="credentials.password"
+               class="input-block-level input"
+               placeholder="Password"
                required
                ng-minlength="6">
 
@@ -53,20 +53,20 @@
     <div class="controls">
       <label class="checkbox">
         <input type="checkbox" value="remember-me"> Remember me
-      </label>      
+      </label>
     </div>
   </div>
 
-  
+
 
   <br>
   <div class="text-center">
-    <button ng-click="login()" 
-            ng-disabled="signin.$invalid" 
-            class="btn btn-medium btn-primary">Sign in</button> 
+    <button ng-click="login()"
+            ng-disabled="signin.$invalid"
+            class="btn btn-medium btn-primary">Sign in</button>
     <br><br>
     <p><small>New here? <a href="/signup">Create an account.</a></small></p>
-        
+
   </div>
-  
+
 </form>

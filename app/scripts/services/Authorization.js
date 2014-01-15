@@ -4,7 +4,7 @@ angular.module('OAuth2UI.services', [])
 
   .factory('Authorization', function ($location, $http) {
 
-    var params = {};
+    var params = null;
 
     return {
 

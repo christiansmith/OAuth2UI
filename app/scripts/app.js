@@ -19,7 +19,11 @@ angular.module('OAuth2UI', ['OAuth2UI.controllers', 'OAuth2UI.services'])
       .when('/signup', {
         templateUrl: 'views/signup.html',
         controller: 'SignupCtrl'
-      })      
+      })
+      .when('/account', {
+        templateUrl: 'views/account.html',
+        controller: 'AccountCtrl'
+      })
       .otherwise({
         redirectTo: '/signin'
       });
