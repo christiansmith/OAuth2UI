@@ -24,6 +24,10 @@ angular.module('OAuth2UI', ['OAuth2UI.controllers', 'OAuth2UI.services'])
         templateUrl: 'views/account.html',
         controller: 'AccountCtrl'
       })
+      .when('/account/apps', {
+        templateUrl: 'views/apps.html',
+        controller: 'AppsCtrl'
+      })
       .otherwise({
         redirectTo: '/signin'
       });
