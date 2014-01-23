@@ -10,7 +10,18 @@ angular.module('OAuth2UI', ['OAuth2UI.controllers', 'OAuth2UI.services'])
     $routeProvider
       .when('/authorize', {
         templateUrl: 'views/authorize.html',
-        controller: 'AuthorizeCtrl'
+        controller: 'AuthorizeCtrl',
+        resolve: {
+          User: ['$q', 'User', function ($q, User) {
+            var deferred = $q.defer();
+
+            User.session().then(function () {
+              deferred.resolve(User);
+            })
+
+            return deferred.promise;
+          }]
+        }
       })
       .when('/signin', {
         templateUrl: 'views/signin.html',
