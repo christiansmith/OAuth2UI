@@ -11,6 +11,14 @@ angular.module('OAuth2UI.controllers')
       console.log('SCOPE APPS', $scope.apps);
     });
 
+    $scope.revoke = function (id) {
+      User.revoke(id).then(function () {
+        User.apps().then(function (data) {
+          $scope.apps = data;
+        });
+      });
+    };
+
   })
 
 

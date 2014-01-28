@@ -158,6 +158,26 @@ angular.module('OAuth2UI.services')
 
 
     /**
+     * Revoke access token
+     */
+
+    User.prototype.revoke = function (client_id) {
+      var deferred = $q.defer();
+
+      function success (response) {
+        deferred.resolve(response.data);
+      }
+
+      function failure (fault) {
+        deferred.reject(fault);
+      }
+
+      $http.delete('/session/apps/' + client_id).then(success, failure);
+      return deferred.promise;
+    };
+
+
+    /**
      * Return an instance of User
      */
 

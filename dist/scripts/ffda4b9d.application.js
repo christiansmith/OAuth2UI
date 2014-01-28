@@ -205,6 +205,14 @@ angular.module('OAuth2UI.controllers')
       console.log('SCOPE APPS', $scope.apps);
     });
 
+    $scope.revoke = function (id) {
+      User.revoke(id).then(function () {
+        User.apps().then(function (data) {
+          $scope.apps = data;
+        });
+      });
+    };
+
   })
 
 
@@ -403,6 +411,26 @@ angular.module('OAuth2UI.services')
       }
 
       $http.get('/session/apps').then(success, failure);
+      return deferred.promise;
+    };
+
+
+    /**
+     * Revoke access token
+     */
+
+    User.prototype.revoke = function (client_id) {
+      var deferred = $q.defer();
+
+      function success (response) {
+        deferred.resolve(response.data);
+      }
+
+      function failure (fault) {
+        deferred.reject(fault);
+      }
+
+      $http.delete('/session/apps/' + client_id).then(success, failure);
       return deferred.promise;
     };
 

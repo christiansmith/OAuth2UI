@@ -1,6 +1,13 @@
 <div class="card">
   <h1>App Permissions</h1>
-  <ul>
-    <li ng-repeat="app in apps">{{app.name}}</li>
-  </ul>
+  <table class="table">
+    <tbody>
+      <tr ng-repeat="app in apps">
+        <th width="90%">{{app.name}}</th>
+        <td>
+          <a href="#" ng-click="revoke(app._id)"><i class="icon-remove"></i></a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
