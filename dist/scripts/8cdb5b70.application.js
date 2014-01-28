@@ -188,6 +188,12 @@ angular.module('OAuth2UI.controllers')
 
     $scope.user = User;
 
+    $scope.logout = function () {
+      User.logout().then(function () {
+        $location.path('/signin');
+      });
+    };
+
   })
 
 
