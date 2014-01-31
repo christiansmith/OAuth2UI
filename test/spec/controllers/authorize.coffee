@@ -3,7 +3,7 @@
 describe 'AuthorizeCtrl', ->
 
 
-  {AuthorizeCtrl,Authorization,User,$rootScope,$controller,$location,$q,scope} = {}
+  {AuthorizeCtrl,Flow,User,client,scopes,$rootScope,$controller,$location,$q,scope} = {}
 
 
   beforeEach module 'OAuth2UI.controllers'
@@ -12,30 +12,27 @@ describe 'AuthorizeCtrl', ->
 
   beforeEach inject ($injector) ->
     User          = $injector.get 'User'
-    Authorization = $injector.get 'Authorization'
     $controller   = $injector.get '$controller'
-    $location     = $injector.get '$location'
     $rootScope    = $injector.get '$rootScope'
-    $routeParams  = $injector.get '$routeParams'
     $q            = $injector.get '$q'
 
-    $routeParams.foo = 'bar'
-    scope = $rootScope.$new();
-    AuthorizeCtrl = $controller 'AuthorizeCtrl', $scope: scope
+    client = name: 'Foo'
+    scopes = url: 'description'
+    Flow = app: client, scope: scopes
+
+    #$routeParams.foo = 'bar'
+    scope = $rootScope.$new()
+    AuthorizeCtrl = $controller 'AuthorizeCtrl', $scope: scope, Flow: Flow, User: User
 
 
-  it 'should set authorization parameters from the querystring', ->
-    expect(Authorization.getParams().foo).toBe 'bar'
+  it 'should have a client', ->
+    expect(scope.client).toBe client
 
-  it 'should direct unauthenticated users to sign in', ->
-    expect($location.path()).toBe '/signin'
+  it 'should have scope descriptions', ->
+    expect(scope.scope).toBe scopes
 
-  it 'should fetch client and scope details', ->
-    spyOn(Authorization, 'getDetails').andCallFake -> $q.defer().promise
-    User.isAuthenticated name: 'whatever'
-    scope = $rootScope.$new();
-    AuthorizeCtrl = $controller 'AuthorizeCtrl', $scope: scope
-    expect(Authorization.getDetails).toHaveBeenCalled()
+  it 'should have a user', ->
+    expect(scope.user).toBe User
 
   it 'should log the user out', ->
     spyOn(User, 'logout').andCallFake -> $q.defer().promise

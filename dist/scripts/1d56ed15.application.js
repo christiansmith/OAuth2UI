@@ -46,7 +46,10 @@ angular.module('OAuth2UI', ['OAuth2UI.controllers', 'OAuth2UI.services'])
         templateUrl: 'views/authorize.html',
         controller: 'AuthorizeCtrl',
         resolve: {
-          User: ensureSession
+          User: ensureSession,
+          Flow: ['Flow', function (Flow) {
+            return Flow.resolve();
+          }]
         }
       })
       .when('/signin', {
@@ -80,29 +83,56 @@ angular.module('OAuth2UI', ['OAuth2UI.controllers', 'OAuth2UI.services'])
 'use strict';
 
 angular.module('OAuth2UI.controllers', [])
-  .controller('AuthorizeCtrl', function ($scope, $routeParams, $location, Flow, User) {
+  .controller('AccountCtrl', function ($scope, $location, User) {
 
-    Flow.setParams($routeParams);
-
-    if (!User.isAuthenticated()) {
-      $location.path('/signin')
-    }
-
-    $scope.authorization = Flow.getParams();
-
-    function authDetailsSuccess (response) {
-      console.log('RESPONSE', response)
-      $scope.client = response.data.app;
-      $scope.scope = response.data.scope;
-    }
-
-    function authDetailsFailure (fault) {
-      console.log('FAULT', fault)
-    }
-
-    Flow.getDetails().then(authDetailsSuccess, authDetailsFailure);
+    if (!User.isAuthenticated()) { $location.path('/signin'); }
 
     $scope.user = User;
+
+    $scope.logout = function () {
+      User.logout().then(function () {
+        $location.path('/signin');
+      });
+    };
+
+  })
+
+
+
+
+'use strict';
+
+angular.module('OAuth2UI.controllers')
+  .controller('AppsCtrl', function ($scope, $location, User) {
+
+    if (!User.isAuthenticated()) { $location.path('/signin'); }
+
+    User.apps().then(function (data) {
+      $scope.apps = data;
+      console.log('SCOPE APPS', $scope.apps);
+    });
+
+    $scope.revoke = function (id) {
+      User.revoke(id).then(function () {
+        User.apps().then(function (data) {
+          $scope.apps = data;
+        });
+      });
+    };
+
+  })
+
+
+
+'use strict';
+
+angular.module('OAuth2UI.controllers')
+  .controller('AuthorizeCtrl', function ($scope, $location, Flow, User) {
+
+    $scope.authorization = Flow.params;
+    $scope.client        = Flow.app;
+    $scope.scope         = Flow.scope;
+    $scope.user          = User;
 
     $scope.logout = function () {
       User.logout().then(function () {
@@ -121,7 +151,7 @@ angular.module('OAuth2UI.controllers')
     $scope.login = function () {
       function success (response) {
         console.log('SUCCESS', User);
-        $location.path(Flow.destination());
+        $location.path(Flow.authorizing ? '/authorize' : '/account');
       }
 
       function failure (fault) {
@@ -181,82 +211,101 @@ angular.module('OAuth2UI.controllers')
   });
 'use strict';
 
-angular.module('OAuth2UI.controllers')
-  .controller('AccountCtrl', function ($scope, $location, User) {
-
-    if (!User.isAuthenticated()) { $location.path('/signin'); }
-
-    $scope.user = User;
-
-    $scope.logout = function () {
-      User.logout().then(function () {
-        $location.path('/signin');
-      });
-    };
-
-  })
-
-
-
-
-'use strict';
-
-angular.module('OAuth2UI.controllers')
-  .controller('AppsCtrl', function ($scope, $location, User) {
-
-    if (!User.isAuthenticated()) { $location.path('/signin'); }
-
-    User.apps().then(function (data) {
-      $scope.apps = data;
-      console.log('SCOPE APPS', $scope.apps);
-    });
-
-    $scope.revoke = function (id) {
-      User.revoke(id).then(function () {
-        User.apps().then(function (data) {
-          $scope.apps = data;
-        });
-      });
-    };
-
-  })
-
-
-
-'use strict';
-
 angular.module('OAuth2UI.services', [])
 
-  .factory('Flow', function ($location, $http) {
-
-    var params = {};
+  .factory('Flow', function ($q, $route, $window, $location, $http, User) {
 
     return {
 
-      destination: function () {
-        return (Object.keys(params).length > 0) ? '/authorize' : '/account';
+
+      authorizing: false,
+
+      /**
+       * Memorize initial query string
+       */
+
+      params: {},
+
+
+      /**
+       * Redirect
+       */
+
+      redirect: function (uri) {
+        $window.location = uri;
       },
 
-      getDetails: function () {
-        return $http({
+
+      /**
+       * Hit /authorize endpoint on server
+       */
+
+      authorize: function () {
+        var Flow = this
+          , deferred = $q.defer()
+          ;
+
+        function success (response) {
+
+          // we're already authorized
+          // "redirect" to the client app
+          if (response.data.redirect_uri) {
+            Flow.redirect(response.data.redirect_uri);
+          }
+
+          // here's the descriptive data we need
+          // to prompt the user to allow/deny
+          else {
+            Flow.app   = response.data.app;
+            Flow.scope = response.data.scope;
+            deferred.resolve(Flow);
+          }
+
+        }
+
+        $http({
           method: 'GET',
           url: '/authorize',
-          params: params,
+          params: this.params,
           headers: {
             'Content-type': 'application/json'
           }
-        });
+        }).then(success);
+
+        return deferred.promise;
       },
 
-      setParams: function (p) {
-        Object.keys(p).forEach(function (key) {
-          params[key] = p[key];
-        });
-        $location.url($location.path())
-      },
 
-      getParams: function () {
-        return params;
+      /**
+       * Gaurd /authorize route
+       */
+
+      resolve: function () {
+        var deferred = $q.defer()
+          , Flow = this
+          ;
+
+        // authorizing
+        this.authorizing = true;
+
+        // stash route params
+        angular.extend(this.params, $route.current.params);
+
+
+        User.session().then(function () {
+          // ensure authenticated user
+          if (!User.isAuthenticated()) {
+            return $location.url('/signin');
+          }
+
+          // authorization details or redirect_uri
+          // depending on if a token already exists
+          Flow.authorize().then(function (flow) {
+            deferred.resolve(flow);
+          });
+        });
+
+        return deferred.promise;
       }
 
     }
@@ -472,9 +521,21 @@ angular.module('OAuth2UI')
 
   .factory('AuthenticationInterceptor', function ($q, $injector) {
 
-    var $location;
+    var $window, $location;
 
     return {
+
+      response: function (response) {
+        $window = $window || $injector.get('$window');
+
+        //console.log('intercepted', response);
+        if (response.status === 302) {
+          console.log('302 is true')
+          $window.location = response.headers.location;
+        }
+
+        return response || $q.when(response);
+      },
 
       /**
        * Handle 401 Response
@@ -485,7 +546,7 @@ angular.module('OAuth2UI')
 
         if (rejection.status === 401) {
           $location.path('/signin');
-        } 
+        }
 
         return $q.reject(rejection);
       }

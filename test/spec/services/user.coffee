@@ -68,9 +68,9 @@ describe 'User', ->
         email: 'john@example.com'
         password: 'secret'
 
-      $httpBackend.expectPOST('/signup', validSignup).respond({ 
+      $httpBackend.expectPOST('/signup', validSignup).respond({
         authenticated: true
-        user: validSignup 
+        user: validSignup
       })
 
       User.signup(validSignup)
@@ -90,13 +90,13 @@ describe 'User', ->
         authenticated: true,
         account: {name:'John Smith'}
       })
-      
+
       promise = User.login(form)
       $httpBackend.flush()
 
     it 'should return a promise', ->
       expect(typeof promise.then).toBe 'function'
-    
+
     it 'should become authenticated', ->
       expect(User.isAuthenticated()).toBe true
 
@@ -120,14 +120,14 @@ describe 'User', ->
         authenticated: false,
         message: 'Invalid password!'
       })
-      
+
       User.requireAuthentication()
       promise = User.login(form)
       $httpBackend.flush()
 
     it 'should return a promise', ->
       expect(typeof promise.then).toBe 'function'
-    
+
     it 'should not become authenticated', ->
       expect(User.isAuthenticated()).toBe false
 
@@ -176,7 +176,7 @@ describe 'User', ->
   describe 'after requesting session', ->
     beforeEach ->
       $httpBackend.expectGET('/session')
-        .respond(200, { authenticated: true, user: {name: 'John Smith'}})
+        .respond(200, { authenticated: true, account: {name: 'John Smith'}})
       User.session()
       $httpBackend.flush()
 

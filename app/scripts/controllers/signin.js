@@ -8,7 +8,7 @@ angular.module('OAuth2UI.controllers')
     $scope.login = function () {
       function success (response) {
         console.log('SUCCESS', User);
-        $location.path(Flow.destination());
+        $location.path(Flow.authorizing ? '/authorize' : '/account');
       }
 
       function failure (fault) {

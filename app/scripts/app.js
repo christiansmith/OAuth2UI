@@ -46,7 +46,10 @@ angular.module('OAuth2UI', ['OAuth2UI.controllers', 'OAuth2UI.services'])
         templateUrl: 'views/authorize.html',
         controller: 'AuthorizeCtrl',
         resolve: {
-          User: ensureSession
+          User: ensureSession,
+          Flow: ['Flow', function (Flow) {
+            return Flow.resolve();
+          }]
         }
       })
       .when('/signin', {

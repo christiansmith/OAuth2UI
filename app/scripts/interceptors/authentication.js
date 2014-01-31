@@ -4,9 +4,21 @@ angular.module('OAuth2UI')
 
   .factory('AuthenticationInterceptor', function ($q, $injector) {
 
-    var $location;
+    var $window, $location;
 
     return {
+
+      response: function (response) {
+        $window = $window || $injector.get('$window');
+
+        //console.log('intercepted', response);
+        if (response.status === 302) {
+          console.log('302 is true')
+          $window.location = response.headers.location;
+        }
+
+        return response || $q.when(response);
+      },
 
       /**
        * Handle 401 Response
@@ -17,7 +29,7 @@ angular.module('OAuth2UI')
 
         if (rejection.status === 401) {
           $location.path('/signin');
-        } 
+        }
 
         return $q.reject(rejection);
       }
