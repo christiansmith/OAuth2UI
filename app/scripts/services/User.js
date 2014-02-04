@@ -125,15 +125,81 @@ angular.module('OAuth2UI.services')
      */
 
     User.prototype.session = function() {
-      var user = this;
+      var deferred = $q.defer()
+        , user     = this
+        ;
 
       function success (response) {
+        user.pinged = Date.now();
         if (response.data.authenticated) {
           user.isAuthenticated(response.data.account);
         }
+        deferred.resolve(user);
       }
 
-      return $http.get('/session').then(success);
+      $http.get('/session').then(success);
+
+      return deferred.promise;
+    };
+
+
+    /**
+     * Resolve session
+     */
+
+    User.prototype.resolveSession = function () {
+      var promise;
+
+      // get the session if it hasn't
+      // yet been requested
+      if (!this.pinged) {
+        promise = this.session();
+      }
+
+      // otherwise wrap user in a promise
+      else {
+        var deferred = $q.defer();
+        deferred.resolve(this);
+        promise = deferred.promise;
+      }
+
+      return promise;
+    };
+
+
+    /**
+     * Resolve authenticated
+     */
+
+    User.prototype.resolveAuthenticated = function () {
+      var deferred = $q.defer()
+        , user     = this
+        ;
+
+      // if the session has been checked and the
+      // user is authenticated, resolve the promise
+      if (user.pinged && user.isAuthenticated()) {
+        deferred.resolve(User);
+      }
+
+      // otherwise, ping the session
+      else {
+        user.session().then(function () {
+          // if the user is authenticated,
+          // resolve the promise
+          if (user.isAuthenticated()) {
+            deferred.resolve(user);
+          }
+
+          // otherwise, navigate to the
+          // signin view
+          else {
+            $location.path('/signin');
+          }
+        });
+      }
+
+      return deferred.promise;
     };
 
 
@@ -165,10 +231,12 @@ angular.module('OAuth2UI.services')
       var deferred = $q.defer();
 
       function success (response) {
-        deferred.resolve(response.data);
+        console.log('REVOKED', response);
+        deferred.resolve(response);
       }
 
       function failure (fault) {
+        console.log('FAILED REVOKE', fault);
         deferred.reject(fault);
       }
 

@@ -14,27 +14,25 @@ angular.module('OAuth2UI', ['OAuth2UI.controllers', 'OAuth2UI.services'])
      * Register interceptors
      */
 
-    $httpProvider.interceptors.push('AuthenticationInterceptor');
+    //$httpProvider.interceptors.push('AuthenticationInterceptor');
 
 
     /**
      * Ensure session has been pinged
      */
 
-    var ensureSession = ['$q', '$rootScope', 'User', function ($q, $rootScope, User) {
-      var deferred = $q.defer();
+    var resolveSession = ['User', function (User) {
+      return User.resolveSession();
+    }];
 
-      if ($rootScope.session) {
-        deferred.resolve(User);
-      } else {
-        User.session().then(function () {
-          $rootScope.session = true;
-          deferred.resolve(User);
-        })
-      }
+    var resolveAuthenticated = ['User', function (User) {
+      return User.resolveAuthenticated();
+    }];
 
-      return deferred.promise;
-    }]
+    var resolveFlow = ['Flow', function (Flow) {
+      return Flow.resolve();
+    }];
+
 
 
     /**
@@ -46,10 +44,8 @@ angular.module('OAuth2UI', ['OAuth2UI.controllers', 'OAuth2UI.services'])
         templateUrl: 'views/authorize.html',
         controller: 'AuthorizeCtrl',
         resolve: {
-          User: ensureSession,
-          Flow: ['Flow', function (Flow) {
-            return Flow.resolve();
-          }]
+          User: resolveSession,
+          Flow: resolveFlow,
         }
       })
       .when('/signin', {
@@ -64,14 +60,17 @@ angular.module('OAuth2UI', ['OAuth2UI.controllers', 'OAuth2UI.services'])
         templateUrl: 'views/account.html',
         controller: 'AccountCtrl',
         resolve: {
-          User: ensureSession
+          User: resolveAuthenticated
         }
       })
       .when('/account/apps', {
         templateUrl: 'views/apps.html',
         controller: 'AppsCtrl',
         resolve: {
-          User: ensureSession
+          User: resolveAuthenticated,
+          apps: ['User', function (User) {
+            return User.apps();
+          }]
         }
       })
       .otherwise({

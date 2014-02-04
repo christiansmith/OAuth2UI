@@ -3,7 +3,7 @@
 describe 'User', ->
 
 
-  {User,$httpBackend,$location} = {}
+  {User,$httpBackend,$location,$q,resolved} = {}
 
 
   beforeEach module 'OAuth2UI.services'
@@ -11,6 +11,7 @@ describe 'User', ->
 
   beforeEach inject ($injector) ->
     User = $injector.get 'User'
+    $q = $injector.get '$q'
     $location = $injector.get '$location'
     $httpBackend =  $injector.get '$httpBackend'
 
@@ -174,6 +175,7 @@ describe 'User', ->
 
 
   describe 'after requesting session', ->
+
     beforeEach ->
       $httpBackend.expectGET('/session')
         .respond(200, { authenticated: true, account: {name: 'John Smith'}})
@@ -189,3 +191,20 @@ describe 'User', ->
     it 'should have user properties if logged in', ->
       expect(User.name).toBe 'John Smith'
 
+    it 'should have a pinged timestamp', ->
+      expect(typeof User.pinged).toBe 'number'
+
+
+  describe 'resolve session', ->
+
+    beforeEach ->
+      $httpBackend.expectGET('/session')
+        .respond(200, { authenticated: true, account: {name: 'John Smith'}})
+      resolved = User.resolveSession()
+      $httpBackend.flush()
+
+    it 'should return a promise', ->
+      expect(typeof resolved.then).toBe 'function'
+
+    it 'should memoize the response', ->
+      User.resolveSession()

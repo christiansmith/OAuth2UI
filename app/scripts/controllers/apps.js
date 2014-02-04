@@ -2,14 +2,9 @@
 'use strict';
 
 angular.module('OAuth2UI.controllers')
-  .controller('AppsCtrl', function ($scope, $location, User) {
+  .controller('AppsCtrl', function ($scope, User, apps) {
 
-    if (!User.isAuthenticated()) { $location.path('/signin'); }
-
-    User.apps().then(function (data) {
-      $scope.apps = data;
-      console.log('SCOPE APPS', $scope.apps);
-    });
+    $scope.apps = apps;
 
     $scope.revoke = function (id) {
       User.revoke(id).then(function () {

@@ -14,27 +14,25 @@ angular.module('OAuth2UI', ['OAuth2UI.controllers', 'OAuth2UI.services'])
      * Register interceptors
      */
 
-    $httpProvider.interceptors.push('AuthenticationInterceptor');
+    //$httpProvider.interceptors.push('AuthenticationInterceptor');
 
 
     /**
      * Ensure session has been pinged
      */
 
-    var ensureSession = ['$q', '$rootScope', 'User', function ($q, $rootScope, User) {
-      var deferred = $q.defer();
+    var resolveSession = ['User', function (User) {
+      return User.resolveSession();
+    }];
 
-      if ($rootScope.session) {
-        deferred.resolve(User);
-      } else {
-        User.session().then(function () {
-          $rootScope.session = true;
-          deferred.resolve(User);
-        })
-      }
+    var resolveAuthenticated = ['User', function (User) {
+      return User.resolveAuthenticated();
+    }];
 
-      return deferred.promise;
-    }]
+    var resolveFlow = ['Flow', function (Flow) {
+      return Flow.resolve();
+    }];
+
 
 
     /**
@@ -46,10 +44,8 @@ angular.module('OAuth2UI', ['OAuth2UI.controllers', 'OAuth2UI.services'])
         templateUrl: 'views/authorize.html',
         controller: 'AuthorizeCtrl',
         resolve: {
-          User: ensureSession,
-          Flow: ['Flow', function (Flow) {
-            return Flow.resolve();
-          }]
+          User: resolveSession,
+          Flow: resolveFlow,
         }
       })
       .when('/signin', {
@@ -64,14 +60,17 @@ angular.module('OAuth2UI', ['OAuth2UI.controllers', 'OAuth2UI.services'])
         templateUrl: 'views/account.html',
         controller: 'AccountCtrl',
         resolve: {
-          User: ensureSession
+          User: resolveAuthenticated
         }
       })
       .when('/account/apps', {
         templateUrl: 'views/apps.html',
         controller: 'AppsCtrl',
         resolve: {
-          User: ensureSession
+          User: resolveAuthenticated,
+          apps: ['User', function (User) {
+            return User.apps();
+          }]
         }
       })
       .otherwise({
@@ -84,8 +83,6 @@ angular.module('OAuth2UI', ['OAuth2UI.controllers', 'OAuth2UI.services'])
 
 angular.module('OAuth2UI.controllers', [])
   .controller('AccountCtrl', function ($scope, $location, User) {
-
-    if (!User.isAuthenticated()) { $location.path('/signin'); }
 
     $scope.user = User;
 
@@ -103,14 +100,9 @@ angular.module('OAuth2UI.controllers', [])
 'use strict';
 
 angular.module('OAuth2UI.controllers')
-  .controller('AppsCtrl', function ($scope, $location, User) {
+  .controller('AppsCtrl', function ($scope, User, apps) {
 
-    if (!User.isAuthenticated()) { $location.path('/signin'); }
-
-    User.apps().then(function (data) {
-      $scope.apps = data;
-      console.log('SCOPE APPS', $scope.apps);
-    });
+    $scope.apps = apps;
 
     $scope.revoke = function (id) {
       User.revoke(id).then(function () {
@@ -291,8 +283,13 @@ angular.module('OAuth2UI.services', [])
         // stash route params
         angular.extend(this.params, $route.current.params);
 
+        // remove query string
+        $location.search({});
 
+        // need session ping to be complete before
+        // we continue
         User.session().then(function () {
+
           // ensure authenticated user
           if (!User.isAuthenticated()) {
             return $location.url('/signin');
@@ -438,15 +435,81 @@ angular.module('OAuth2UI.services')
      */
 
     User.prototype.session = function() {
-      var user = this;
+      var deferred = $q.defer()
+        , user     = this
+        ;
 
       function success (response) {
+        user.pinged = Date.now();
         if (response.data.authenticated) {
           user.isAuthenticated(response.data.account);
         }
+        deferred.resolve(user);
       }
 
-      return $http.get('/session').then(success);
+      $http.get('/session').then(success);
+
+      return deferred.promise;
+    };
+
+
+    /**
+     * Resolve session
+     */
+
+    User.prototype.resolveSession = function () {
+      var promise;
+
+      // get the session if it hasn't
+      // yet been requested
+      if (!this.pinged) {
+        promise = this.session();
+      }
+
+      // otherwise wrap user in a promise
+      else {
+        var deferred = $q.defer();
+        deferred.resolve(this);
+        promise = deferred.promise;
+      }
+
+      return promise;
+    };
+
+
+    /**
+     * Resolve authenticated
+     */
+
+    User.prototype.resolveAuthenticated = function () {
+      var deferred = $q.defer()
+        , user     = this
+        ;
+
+      // if the session has been checked and the
+      // user is authenticated, resolve the promise
+      if (user.pinged && user.isAuthenticated()) {
+        deferred.resolve(User);
+      }
+
+      // otherwise, ping the session
+      else {
+        user.session().then(function () {
+          // if the user is authenticated,
+          // resolve the promise
+          if (user.isAuthenticated()) {
+            deferred.resolve(user);
+          }
+
+          // otherwise, navigate to the
+          // signin view
+          else {
+            $location.path('/signin');
+          }
+        });
+      }
+
+      return deferred.promise;
     };
 
 
@@ -478,10 +541,12 @@ angular.module('OAuth2UI.services')
       var deferred = $q.defer();
 
       function success (response) {
-        deferred.resolve(response.data);
+        console.log('REVOKED', response);
+        deferred.resolve(response);
       }
 
       function failure (fault) {
+        console.log('FAILED REVOKE', fault);
         deferred.reject(fault);
       }
 

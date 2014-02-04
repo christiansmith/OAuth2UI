@@ -5,7 +5,8 @@
       <tr ng-repeat="app in apps">
         <th width="90%">{{app.name}}</th>
         <td>
-          <a href="#" ng-click="revoke(app._id)"><i class="icon-remove"></i></a>
+          <button class="btn btn-xs" ng-click="revoke(app._id)"><i class="icon-remove"></i></button>
+          <a ng-click="revoke(app._id)"><i class="icon-remove"></i></a>
         </td>
       </tr>
     </tbody>

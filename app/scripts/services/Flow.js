@@ -80,6 +80,9 @@ angular.module('OAuth2UI.services', [])
         // stash route params
         angular.extend(this.params, $route.current.params);
 
+        // remove query string
+        $location.search({});
+
         // need session ping to be complete before
         // we continue
         User.session().then(function () {
