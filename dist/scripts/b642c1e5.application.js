@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('OAuth2UI', ['OAuth2UI.controllers', 'OAuth2UI.services'])
+angular.module('OAuth2UI', ['OAuth2UI.controllers', 'OAuth2UI.services', 'OAuth2UI.directives', 'ui.bootstrap', 'angular-md5'])
   .config(function ($routeProvider, $locationProvider, $httpProvider) {
 
     /**
@@ -619,3 +619,21 @@ angular.module('OAuth2UI')
     };
 
   });
+
+'use strict';
+
+angular.module('OAuth2UI.directives', [])
+  .directive('userMenu', function ($location, User) {
+    return {
+      restrict: 'E',
+      templateUrl: 'views/userMenu.html',
+      link: function (scope, element, attrs) {
+        scope.user = User;
+        scope.signout = function () {
+          return User.logout().then(function () {
+            $location.path('/signin');
+          });
+        };
+      }
+    };
+  })

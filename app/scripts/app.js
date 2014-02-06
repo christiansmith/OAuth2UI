@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('OAuth2UI', ['OAuth2UI.controllers', 'OAuth2UI.services'])
+angular.module('OAuth2UI', ['OAuth2UI.controllers', 'OAuth2UI.services', 'OAuth2UI.directives', 'ui.bootstrap', 'angular-md5'])
   .config(function ($routeProvider, $locationProvider, $httpProvider) {
 
     /**

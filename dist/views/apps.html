@@ -1,11 +1,11 @@
 <div class="card">
-  <h1>App Permissions</h1>
+  <user-menu class="pull-right"></user-menu>
+  <h3 class="card-heading">App Permissions</h3>
   <table class="table">
     <tbody>
       <tr ng-repeat="app in apps">
-        <th width="90%">{{app.name}}</th>
+        <th width="90%"><a href="{{app.website}}">{{app.name}}</a></th>
         <td>
-          <button class="btn btn-xs" ng-click="revoke(app._id)"><i class="icon-remove"></i></button>
           <a ng-click="revoke(app._id)"><i class="icon-remove"></i></a>
         </td>
       </tr>

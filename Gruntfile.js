@@ -263,6 +263,8 @@ module.exports = function (grunt) {
             'bower_components/font-awesome/css/*',
             'bower_components/font-awesome/font/*',
             'bower_components/angular-unstable/angular.js',
+            'bower_components/angular-bootstrap/ui-bootstrap.js',
+            'bower_components/angular-md5/angular-md5.js',
             'images/{,*/}*.{gif,webp}',
             'styles/fonts/*'
           ]

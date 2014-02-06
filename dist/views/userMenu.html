@@ -1,0 +1,10 @@
+<div class="dropdown">
+  <a class="dropdown-toggle">
+    <img ng-src="http://www.gravatar.com/avatar/{{ user.email | gravatar }}" class="img-circle" width="30px" height="30px">
+  </a>
+  <ul class="dropdown-menu">
+    <li><a href="/account">Account</a></li>
+    <li><a href="/account/apps">Apps</a></li>
+    <li><a ng-click="signout()">Signout</a></li>
+  </ul>
+</div>
