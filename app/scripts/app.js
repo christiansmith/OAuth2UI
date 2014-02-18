@@ -44,7 +44,6 @@ angular.module('OAuth2UI', ['OAuth2UI.controllers', 'OAuth2UI.services', 'OAuth2
         templateUrl: 'views/authorize.html',
         controller: 'AuthorizeCtrl',
         resolve: {
-          User: resolveSession,
           Flow: resolveFlow,
         }
       })

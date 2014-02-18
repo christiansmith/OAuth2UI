@@ -44,7 +44,6 @@ angular.module('OAuth2UI', ['OAuth2UI.controllers', 'OAuth2UI.services', 'OAuth2
         templateUrl: 'views/authorize.html',
         controller: 'AuthorizeCtrl',
         resolve: {
-          User: resolveSession,
           Flow: resolveFlow,
         }
       })
@@ -105,7 +104,6 @@ angular.module('OAuth2UI.controllers')
     $scope.apps = apps;
 
     $scope.revoke = function (id) {
-      console.log('REVOKING', User);
       User.revoke(id).then(function () {
         User.apps().then(function (data) {
           $scope.apps = data;
