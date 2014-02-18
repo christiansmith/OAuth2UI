@@ -105,6 +105,7 @@ angular.module('OAuth2UI.controllers')
     $scope.apps = apps;
 
     $scope.revoke = function (id) {
+      console.log('REVOKING', User);
       User.revoke(id).then(function () {
         User.apps().then(function (data) {
           $scope.apps = data;
@@ -489,7 +490,7 @@ angular.module('OAuth2UI.services')
       // if the session has been checked and the
       // user is authenticated, resolve the promise
       if (user.pinged && user.isAuthenticated()) {
-        deferred.resolve(User);
+        deferred.resolve(user);
       }
 
       // otherwise, ping the session
