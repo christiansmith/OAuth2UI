@@ -72,6 +72,10 @@ angular.module('OAuth2UI', ['OAuth2UI.controllers', 'OAuth2UI.services', 'OAuth2
           }]
         }
       })
+      .when('/developer', {
+        templateUrl: 'views/developer.html',
+        controller: 'DeveloperCtrl'
+      })
       .otherwise({
         redirectTo: '/signin'
       });

@@ -1,0 +1,22 @@
+<div class="card" ng-repeat="app in apps">
+  <h3 class="card-heading">{{app.name}}</h3>
+  <form>
+
+
+    <label>Type</label>
+    <select class="input-block-level" ng-model="app.type">
+      <option value="confidential">Confidential</option>
+      <option value="public">Public</option>
+    </select>
+
+    <label>Website</label>
+    <input class="input-block-level" type="text" ng-model="app.website" placeholder="https://...">
+
+    <label>Redirect URI</label>
+    <input class="input-block-level" type="text" ng-model="app.redirect_uri" placeholder="https://...">
+
+    <label>Created</label>
+    {{app.created | date:'medium'}}
+
+  </form>
+</div>
